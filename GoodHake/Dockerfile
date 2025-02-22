@@ -1,30 +1,28 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
+# Basis-Image für .NET 8 Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
-
-# This stage is used to build the service project
+# Basis-Image für .NET SDK (wird nur für den Build genutzt)
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["GoodHake/GoodHake.csproj", "GoodHake/"]
-RUN dotnet restore "./GoodHake/GoodHake.csproj"
-COPY . .
+
+# Projektdateien kopieren & Wiederherstellen der Abhängigkeiten
+COPY ["GoodHake.csproj", "GoodHake/"]
 WORKDIR "/src/GoodHake"
-RUN dotnet build "./GoodHake.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet restore "GoodHake.csproj"
 
-# This stage is used to publish the service project to be copied to the final stage
+# Alle Dateien kopieren & Projekt bauen
+COPY . .
+RUN dotnet build "GoodHake.csproj" -c Release -o /app/build
+
+# Veröffentlichen
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./GoodHake.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "GoodHake.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+# Finales Image mit Runtime
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "GoodHake.dll"]

@@ -9,6 +9,9 @@ namespace GoodHake.Models
         [Required]
         public string Name { get; set; }
 
+        [Required, MinLength(6)]
+        public string PasswordHash { get; set; } // Passwort wird gehasht gespeichert
+
         [Required]
         public int Age { get; set; }
 

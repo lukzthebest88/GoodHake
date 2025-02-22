@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using GoodHake.Context;
 using GoodHake.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,8 @@ namespace GoodHake.Controllers
             _context = context;
 
         }
+
+        [Authorize]
         public IActionResult Index()
         {
             var today = System.DateTime.Today;

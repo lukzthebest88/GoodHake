@@ -1,0 +1,24 @@
+﻿@model GoodHake.Models.User
+
+<h2>Registrierung</h2>
+
+<form asp-action="Register" method="post">
+    <label>Name:</label>
+    <input type="text" asp-for="Name" class="form-control" required />
+
+    <label>Passwort:</label>
+    <input type="password" asp-for="PasswordHash" class="form-control" required />
+
+    <label>Geschlecht:</label>
+    <select asp-for="Gender" class="form-control" required>
+        <option value="">Bitte wählen...</option>
+        <option value="Male">Männlich</option>
+        <option value="Female">Weiblich</option>
+        <option value="Other">Andere</option>
+    </select>
+    <span asp-validation-for="Gender" class="text-danger"></span>
+
+    <button type="submit" class="btn btn-success mt-2">Registrieren</button>
+</form>
+
+<p>Schon registriert? <a asp-action="Login">Hier anmelden</a></p>

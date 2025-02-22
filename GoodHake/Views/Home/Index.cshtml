@@ -1,8 +1,56 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model GoodHake.Models.DailyIntake
+
+@{
+    ViewData["Title"] = "Willkommen im Kalorien-Tracker";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Kalorien-Tracker</h1>
+    <p>Behalte deine tägliche Kalorienzufuhr im Blick.</p>
+
+    <a class="btn btn-primary" asp-controller="User" asp-action="Profile">Profil bearbeiten</a>
+    <a class="btn btn-info" asp-controller="Meal" asp-action="List">Mahlzeiten verwalten</a>
 </div>
+
+<hr />
+
+<h2>📊 Kalorienübersicht für @DateTime.Now.ToShortDateString()</h2>
+
+@if (Model.Meals != null && Model.Meals.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Mahlzeit</th>
+                <th>Kalorien</th>
+                <th>Eiweiß (g)</th>
+                <th>Fett (g)</th>
+                <th>Kohlenhydrate (g)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var meal in Model.Meals)
+            {
+                <tr>
+                    <td>@meal.Name</td>
+                    <td>@meal.Calories</td>
+                    <td>@meal.Protein</td>
+                    <td>@meal.Fat</td>
+                    <td>@meal.Carbs</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>💡 Gesamt für heute:</h4>
+    <ul>
+        <li><strong>Kalorien:</strong> @Model.TotalCalories kcal</li>
+        <li><strong>Eiweiß:</strong> @Model.TotalProtein g</li>
+        <li><strong>Fett:</strong> @Model.TotalFat g</li>
+        <li><strong>Kohlenhydrate:</strong> @Model.TotalCarbs g</li>
+    </ul>
+}
+else
+{
+    <p class="alert alert-warning">Noch keine Mahlzeiten eingetragen. <a asp-controller="Meal" asp-action="Add">Jetzt hinzufügen!</a></p>
+}

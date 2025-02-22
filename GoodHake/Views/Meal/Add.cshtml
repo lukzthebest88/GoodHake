@@ -1,0 +1,22 @@
+﻿@model GoodHake.Models.Meal
+
+<h2>Neue Mahlzeit hinzufügen</h2>
+
+<form asp-action="Add" method="post">
+    <label>Name:</label>
+    <input type="text" asp-for="Name" class="form-control" required />
+
+    <label>Kalorien:</label>
+    <input type="number" asp-for="Calories" class="form-control" required />
+
+    <label>Eiweiß (g):</label>
+    <input type="number" asp-for="Protein" class="form-control" step="0.1" />
+
+    <label>Fett (g):</label>
+    <input type="number" asp-for="Fat" class="form-control" step="0.1" />
+
+    <label>Kohlenhydrate (g):</label>
+    <input type="number" asp-for="Carbs" class="form-control" step="0.1" />
+
+    <button type="submit" class="btn btn-success mt-2">Speichern</button>
+</form>

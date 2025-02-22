@@ -1,0 +1,29 @@
+﻿@model IEnumerable<GoodHake.Models.Meal>
+
+<h2>Gespeicherte Mahlzeiten</h2>
+
+<a class="btn btn-primary" asp-action="Add">Neue Mahlzeit hinzufügen</a>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Kalorien</th>
+            <th>Eiweiß</th>
+            <th>Fett</th>
+            <th>Kohlenhydrate</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var meal in Model)
+        {
+            <tr>
+                <td>@meal.Name</td>
+                <td>@meal.Calories</td>
+                <td>@meal.Protein</td>
+                <td>@meal.Fat</td>
+                <td>@meal.Carbs</td>
+            </tr>
+        }
+    </tbody>
+</table>

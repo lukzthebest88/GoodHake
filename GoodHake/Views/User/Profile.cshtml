@@ -1,0 +1,24 @@
+﻿@model GoodHake.Models.User
+
+<h2>Benutzerprofil</h2>
+<form asp-action="Update" method="post">
+    <label>Name:</label>
+    <input type="text" asp-for="Name" class="form-control" />
+
+    <label>Alter:</label>
+    <input type="number" asp-for="Age" class="form-control" />
+
+    <label>Geschlecht:</label>
+    <select asp-for="Gender" class="form-control">
+        <option value="Männlich">Männlich</option>
+        <option value="Weiblich">Weiblich</option>
+    </select>
+
+    <label>Gewicht (kg):</label>
+    <input type="number" asp-for="Weight" class="form-control" />
+
+    <label>Tageskalorienziel:</label>
+    <input type="number" asp-for="DailyCalorieGoal" class="form-control" />
+
+    <button type="submit" class="btn btn-primary">Speichern</button>
+</form>

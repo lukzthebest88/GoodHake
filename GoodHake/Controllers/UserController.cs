@@ -31,6 +31,7 @@ namespace GoodHake.Controllers
             return View();
         }
 
+
         [Authorize]
         public IActionResult Profile()
         {

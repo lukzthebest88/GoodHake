@@ -18,7 +18,7 @@ namespace GoodHake.Controllers
 
         public IActionResult List()
         {
-            var userName = User.Identity.Name; // 🔥 Eingeloggten Benutzer abrufen
+            var userName = User.Identity.Name; //  Eingeloggten Benutzer abrufen
 
             if (string.IsNullOrEmpty(userName))
             {
@@ -47,7 +47,7 @@ namespace GoodHake.Controllers
 
             if (ModelState.IsValid)
             {
-                meal.Name = userName; // Mahlzeit dem Benutzer zuweisen
+                 meal.Name = userName; // Mahlzeit dem Benutzer zuweisen
                 _context.Meals.Add(meal);
                 _context.SaveChanges();
 

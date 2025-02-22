@@ -1,7 +1,7 @@
 ﻿@model GoodHake.Models.DailyIntake
 
 @{
-    ViewData["Title"] = "Willkommen im Kalorien-Tracker";
+    ViewData["Title"] = "GoodHake";
 }
 
 <div class="text-center">
@@ -14,7 +14,7 @@
 
 <hr />
 
-<h2>📊 Kalorienübersicht für @DateTime.Now.ToShortDateString()</h2>
+<h2>Kalorienübersicht für @DateTime.Now.ToShortDateString()</h2>
 
 @if (Model.Meals != null && Model.Meals.Any())
 {
@@ -32,7 +32,7 @@
             @foreach (var meal in Model.Meals)
             {
                 <tr>
-                    <td>@meal.Name</td>
+                    <td>@meal.MealName</td>
                     <td>@meal.Calories</td>
                     <td>@meal.Protein</td>
                     <td>@meal.Fat</td>

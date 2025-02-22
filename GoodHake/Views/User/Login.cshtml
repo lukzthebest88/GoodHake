@@ -1,13 +1,22 @@
-﻿<h2>Login</h2>
+﻿@model GoodHake.Models.User
 
-<form asp-action="Login" method="post">
-    <label>Name:</label>
-    <input type="name" name="name" class="form-control" required />
+<h2>Login</h2>
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
 
-    <label>Passwort:</label>
-    <input type="password" name="password" class="form-control" required />
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
 
-    <button type="submit" class="btn btn-primary mt-2">Login</button>
+    <div class="form-group">
+        <label asp-for="PasswordHash">Password</label>
+        <input asp-for="PasswordHash" type="password" class="form-control" />
+        <span asp-validation-for="PasswordHash" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
 </form>
 
 <p>Noch kein Konto? <a asp-action="Register">Jetzt registrieren</a></p>

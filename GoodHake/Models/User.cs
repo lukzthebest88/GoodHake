@@ -22,5 +22,6 @@ namespace GoodHake.Models
         public double Weight { get; set; } // Gewicht in kg
 
         public int DailyCalorieGoal { get; set; } // Manuell einstellbare Tageskalorien
+
     }
 }

@@ -20,6 +20,11 @@ namespace GoodHake.Controllers
         {
             _context = context;
         }
+        public IActionResult List()
+        {
+            var users = _context.Users.ToList();
+            return Json(users); // Alle Benutzer als JSON zurückgeben
+        }
 
         public IActionResult Register()
         {
@@ -70,19 +75,19 @@ namespace GoodHake.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string name, string password)
+        public IActionResult Login(User user)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Name == name);
+            var existingUser = _context.Users.FirstOrDefault(u => u.Name == user.Name);
 
-            if (user == null || user.PasswordHash != HashPassword(password))
+            if (existingUser == null || existingUser.PasswordHash != HashPassword(user.PasswordHash))
             {
                 ModelState.AddModelError("", "Ungültiger Name oder Passwort.");
-                return View();
+                return View(user); // Fehler zurückgeben
             }
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Name ?? "")
+                new Claim(ClaimTypes.Name, existingUser.Name ?? "")
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -91,6 +96,7 @@ namespace GoodHake.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
 
         public IActionResult Logout()
         {

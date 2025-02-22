@@ -3,8 +3,13 @@
 <h2>Neue Mahlzeit hinzufügen</h2>
 
 <form asp-action="Add" method="post">
-    <label>Name:</label>
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <label>Meal:</label>
     <input type="text" asp-for="Name" class="form-control" required />
+
+    <label>MealName:</label>
+    <input type="text" asp-for="MealName" class="form-control" required />
 
     <label>Kalorien:</label>
     <input type="number" asp-for="Calories" class="form-control" required />

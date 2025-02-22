@@ -49,18 +49,20 @@ namespace GoodHake.Controllers
                 return View();
             }
 
-            if (string.IsNullOrEmpty(user.Gender)) // Sicherstellen, dass Gender gesetzt ist
+            if (string.IsNullOrEmpty(user.Name)) // Sicherstellen, dass Name gesetzt ist
             {
-                ModelState.AddModelError("Gender", "Bitte ein Geschlecht auswählen.");
+                ModelState.AddModelError("Name", "Bitte gib einen Benutzernamen ein.");
                 return View();
             }
 
             user.PasswordHash = HashPassword(user.PasswordHash); // Passwort-Hashing
-            _context.Users.Add(user);
-            _context.SaveChanges();
+
+            _context.Users.Add(user); // Benutzer speichern
+            _context.SaveChanges();    // Änderungen in die DB schreiben
 
             return RedirectToAction("Login");
         }
+
 
         public IActionResult Login()
         {

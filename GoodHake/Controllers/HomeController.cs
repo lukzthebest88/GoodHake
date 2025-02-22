@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using GoodHake.Context;
 using GoodHake.Models;
@@ -23,16 +23,23 @@ namespace GoodHake.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            var today = System.DateTime.Today;
+            var today = DateTime.Today;
+            var userName = User.Identity.Name; // Aktuellen Benutzer holen
 
-            // Tages�bersicht mit Mahlzeiten laden
+            // Nur die Tagesübersicht für den eingeloggten Benutzer laden
             var dailyIntake = _context.DailyIntakes
                 .Include(d => d.Meals) // Sicherstellen, dass Mahlzeiten geladen werden!
-                .FirstOrDefault(d => d.Date.Date == today);
+                .FirstOrDefault(d => d.Date == today && d.Name == userName); // Benutzer beachten!
 
             if (dailyIntake == null)
             {
-                dailyIntake = new DailyIntake { Date = today, Meals = new List<Meal>() };
+                dailyIntake = new DailyIntake
+                {
+                    Date = today,
+                    Name = userName,
+                    Meals = new List<Meal>()
+                };
+
                 _context.DailyIntakes.Add(dailyIntake);
                 _context.SaveChanges();
             }

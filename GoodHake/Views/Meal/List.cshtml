@@ -1,29 +1,83 @@
 ﻿@model IEnumerable<GoodHake.Models.Meal>
 
-<h2>Gespeicherte Mahlzeiten</h2>
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center text-primary mb-4">Gespeicherte Mahlzeiten</h2>
 
-<a class="btn btn-primary" asp-action="Add">Neue Mahlzeit hinzufügen</a>
+        <div class="d-flex justify-content-between mb-3">
+            <h5 class="text-secondary">Liste deiner Mahlzeiten</h5>
+            <a class="btn btn-success fw-bold" asp-action="Add">
+                ➕ Neue Mahlzeit hinzufügen
+            </a>
+        </div>
 
-<table class="table table-striped mt-3">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Kalorien</th>
-            <th>Eiweiß</th>
-            <th>Fett</th>
-            <th>Kohlenhydrate</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var meal in Model)
-        {
-            <tr>
-                <td>@meal.MealName</td>
-                <td>@meal.Calories</td>
-                <td>@meal.Protein</td>
-                <td>@meal.Fat</td>
-                <td>@meal.Carbs</td>
-            </tr>
+        <div class="table-responsive">
+            <table class="table table-hover text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Kalorien</th>
+                        <th>Eiweiß (g)</th>
+                        <th>Fett (g)</th>
+                        <th>Kohlenhydrate (g)</th>
+                        <th>Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var meal in Model)
+                    {
+                        <tr>
+                            <td>@meal.MealName</td>
+                            <td>@meal.Calories</td>
+                            <td>@meal.Protein</td>
+                            <td>@meal.Fat</td>
+                            <td>@meal.Carbs</td>
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@meal.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Möchtest du diese Mahlzeit wirklich löschen?');">
+                                        Löschen
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(id) {
+        if (confirm("Bist du sicher, dass du diese Mahlzeit löschen möchtest?")) {
+            window.location.href = "/Meal/Delete/" + id;
         }
-    </tbody>
-</table>
+    }
+</script>
+
+<style>
+    .card {
+        max-width: 900px;
+        margin: auto;
+        border-radius: 10px;
+    }
+
+    .table {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .btn {
+        transition: 0.3s ease;
+        border-radius: 8px;
+    }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+</style>

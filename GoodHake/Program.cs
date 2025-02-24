@@ -14,6 +14,10 @@ builder.Services.AddDbContext<GDDBContext>(options =>
     options.UseInMemoryDatabase("CalorieDB"); // Hier wird die In-Memory-DB konfiguriert!
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("role", "admin"));
+});
 // Authentication & Sessions
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

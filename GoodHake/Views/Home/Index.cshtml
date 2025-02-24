@@ -4,17 +4,22 @@
     ViewData["Title"] = "GoodHake";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Kalorien-Tracker</h1>
-    <p>Behalte deine tägliche Kalorienzufuhr im Blick.</p>
+@* <div class="text-center"> *@
+@*     <h1 class="display-4">Kalorien-Tracker</h1> *@
+@*     <p>Behalte deine tägliche Kalorienzufuhr im Blick.</p> *@
 
-    <a class="btn btn-primary" asp-controller="User" asp-action="Profile">Profil bearbeiten</a>
-    <a class="btn btn-info" asp-controller="Meal" asp-action="List">Mahlzeiten verwalten</a>
+@*     <a class="btn btn-primary" asp-controller="User" asp-action="Profile">Profil bearbeiten</a> *@
+@*     <a class="btn btn-info" asp-controller="Meal" asp-action="List">Mahlzeiten verwalten</a> *@
+@* </div> *@
+
+<div class="text-lg-end">
+    <h1 class="display-4">GoodHake</h1>
+    <h5>eat good, feel good.</h5>
 </div>
 
-<hr />
-
+<div class="text-lg-start">
 <h2>Kalorienübersicht für @DateTime.Now.ToShortDateString()</h2>
+</div>
 
 @if (Model.Meals != null && Model.Meals.Any())
 {

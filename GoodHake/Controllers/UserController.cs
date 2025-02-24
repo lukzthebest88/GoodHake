@@ -20,11 +20,89 @@ namespace GoodHake.Controllers
         {
             _context = context;
         }
+
+        [Authorize]
         public IActionResult List()
         {
             var users = _context.Users.ToList();
             return Json(users); // Alle Benutzer als JSON zurückgeben
         }
+
+        [Authorize]
+        public IActionResult UserList()
+        {
+            if (!User.Claims.Any(c => c.Type == "role" && c.Value == "Admin"))
+            {
+                return Forbid(); // Kein Zugriff für Nicht-Admins
+            }
+
+            var users = _context.Users.ToList();
+            return View(users);
+        }
+
+        [Authorize]
+        public IActionResult Ban(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsBanned = true;
+            _context.SaveChanges();
+            return RedirectToAction("UserList");
+        }
+
+        [Authorize]
+        public IActionResult Unban(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsBanned = false;
+            _context.SaveChanges();
+            return RedirectToAction("UserList");
+        }
+
+        [Authorize]
+        public IActionResult Stats(int id)
+        {
+            var user = _context.Users
+                .Where(u => u.Id == id)
+                .Select(u => new User
+                {
+                    Id = u.Id,
+                    Name = u.Name,
+                    Age = u.Age,
+                    Gender = u.Gender,
+                    Weight = u.Weight,
+                    DailyCalorieGoal = u.DailyCalorieGoal,
+                    Role = u.Role,
+                    IsBanned = u.IsBanned,
+                    DailyIntake = _context.DailyIntakes
+                        .Where(d => d.Name == u.Name && d.Date.Date == DateTime.Today)
+                        .Select(d => new DailyIntake
+                        {
+                            Date = d.Date,
+                            Meals = _context.Meals.Where(m => d.Meals.Contains(m)).ToList(),
+                        })
+                        .FirstOrDefault()
+                })
+                .FirstOrDefault();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+
 
         public IActionResult Register()
         {
@@ -39,11 +117,46 @@ namespace GoodHake.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("Login"); // Falls User nicht gefunden wird, zum Login schicken
+                return RedirectToAction("Login");
             }
 
             return View(user);
         }
+
+        [HttpPost]
+        public IActionResult Update(User updatedUser)
+        {
+            var username = User.FindFirst(ClaimTypes.Name)?.Value;
+            var user = _context.Users.FirstOrDefault(u => u.Name == username);
+
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Werte aktualisieren
+            user.Name = updatedUser.Name;
+            user.Age = updatedUser.Age;
+            user.Gender = updatedUser.Gender;
+            user.Weight = updatedUser.Weight;
+            user.DailyCalorieGoal = updatedUser.DailyCalorieGoal;
+            // Speichern versuchen
+            try
+            {
+                _context.SaveChanges();
+                Console.WriteLine("Benutzerprofil erfolgreich gespeichert!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fehler beim Speichern: {ex.Message}");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View("Profile", updatedUser);
+            }
+            return RedirectToAction("Profile");
+        }
+
 
         [HttpPost]
         public IActionResult Register(User user)
@@ -82,12 +195,19 @@ namespace GoodHake.Controllers
             if (existingUser == null || existingUser.PasswordHash != HashPassword(user.PasswordHash))
             {
                 ModelState.AddModelError("", "Ungültiger Name oder Passwort.");
-                return View(user); // Fehler zurückgeben
+                return View(user);
+            }
+
+            if (existingUser.IsBanned)
+            {
+                ModelState.AddModelError("", "Dieser Benutzer wurde gesperrt.");
+                return View(user);
             }
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, existingUser.Name ?? "")
+                new Claim(ClaimTypes.Name, existingUser.Name ?? ""),
+                new Claim("role", existingUser.Role)
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -96,7 +216,6 @@ namespace GoodHake.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
 
         public IActionResult Logout()
         {

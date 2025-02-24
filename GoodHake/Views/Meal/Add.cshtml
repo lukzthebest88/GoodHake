@@ -1,27 +1,64 @@
 ﻿@model GoodHake.Models.Meal
 
-<h2>Neue Mahlzeit hinzufügen</h2>
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center text-primary mb-4">Neue Mahlzeit hinzufügen</h2>
 
-<form asp-action="Add" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
+        <form asp-action="Add" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-    <label>Meal:</label>
-    <input type="text" asp-for="Name" class="form-control" required />
+            <div class="mb-3">
+                <label class="form-label">Meal:</label>
+                <input type="text" asp-for="Name" class="form-control" placeholder="z.B. Frühstück" required />
+            </div>
 
-    <label>MealName:</label>
-    <input type="text" asp-for="MealName" class="form-control" required />
+            <div class="mb-3">
+                <label class="form-label">MealName:</label>
+                <input type="text" asp-for="MealName" class="form-control" placeholder="z.B. Rührei mit Toast" required />
+            </div>
 
-    <label>Kalorien:</label>
-    <input type="number" asp-for="Calories" class="form-control" required />
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Kalorien:</label>
+                    <input type="number" asp-for="Calories" class="form-control" required />
+                </div>
 
-    <label>Eiweiß (g):</label>
-    <input type="number" asp-for="Protein" class="form-control" step="0.1" />
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Eiweiß (g):</label>
+                    <input type="number" asp-for="Protein" class="form-control" step="0.1" />
+                </div>
+            </div>
 
-    <label>Fett (g):</label>
-    <input type="number" asp-for="Fat" class="form-control" step="0.1" />
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Fett (g):</label>
+                    <input type="number" asp-for="Fat" class="form-control" step="0.1" />
+                </div>
 
-    <label>Kohlenhydrate (g):</label>
-    <input type="number" asp-for="Carbs" class="form-control" step="0.1" />
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Kohlenhydrate (g):</label>
+                    <input type="number" asp-for="Carbs" class="form-control" step="0.1" />
+                </div>
+            </div>
 
-    <button type="submit" class="btn btn-success mt-2">Speichern</button>
-</form>
+            <button type="submit" class="btn btn-success w-100 fw-bold">Speichern</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .card {
+        max-width: 600px;
+        margin: auto;
+        border-radius: 10px;
+    }
+
+    .btn-success {
+        transition: 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: #28a745;
+            transform: scale(1.05);
+        }
+</style>

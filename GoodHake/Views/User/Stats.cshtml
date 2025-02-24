@@ -1,0 +1,92 @@
+﻿@model GoodHake.Models.User
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benutzerstatistiken</title>
+    <style>
+        .stats-container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-title {
+            text-align: center;
+        }
+
+        .stats-list {
+            list-style: none;
+            padding: 0;
+        }
+
+            .stats-list li {
+                padding: 8px;
+                border-bottom: 1px solid #ddd;
+            }
+
+                .stats-list li:last-child {
+                    border-bottom: none;
+                }
+
+        .daily-intake {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .meal-item {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="stats-container">
+        <h2 class="stats-title">Statistiken von @Model.Name</h2>
+        <ul class="stats-list">
+            <li><strong>Alter:</strong> @Model.Age Jahre</li>
+            <li><strong>Geschlecht:</strong> @Model.Gender</li>
+            <li><strong>Gewicht:</strong> @Model.Weight kg</li>
+            <li><strong>Kalorienziel pro Tag:</strong> @Model.DailyCalorieGoal kcal</li>
+            <li><strong>Rolle:</strong> @Model.Role</li>
+            <li><strong>Status:</strong> @(Model.IsBanned ? "Gesperrt" : "Aktiv")</li>
+        </ul>
+
+        <h3>Heutige Nahrungsaufnahme:</h3>
+        @if (Model.DailyIntake != null)
+        {
+            <div class="daily-intake">
+                <p><strong>Datum:</strong> @Model.DailyIntake.Date.ToShortDateString()</p>
+                <p><strong>Gesamtkalorien:</strong> @Model.DailyIntake.TotalCalories kcal</p>
+                <p><strong>Proteine:</strong> @Model.DailyIntake.TotalProtein g</p>
+                <p><strong>Fette:</strong> @Model.DailyIntake.TotalFat g</p>
+                <p><strong>Kohlenhydrate:</strong> @Model.DailyIntake.TotalCarbs g</p>
+
+                <h4>Mahlzeiten:</h4>
+                @if (Model.DailyIntake.Meals != null && Model.DailyIntake.Meals.Any())
+                {
+                    <ul>
+                        @foreach (var meal in Model.DailyIntake.Meals)
+                        {
+                            <li class="meal-item">@meal.MealName - @meal.Calories kcal</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Keine Mahlzeiten erfasst.</p>
+                }
+            </div>
+        }
+        else
+        {
+            <p>Keine Tagesübersicht verfügbar.</p>
+        }
+    </div>
+</body>
+</html>

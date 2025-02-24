@@ -69,5 +69,21 @@ namespace GoodHake.Controllers
             }
             return View(meal);
         }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var meal = _context.Meals.Find(id);
+            if (meal == null)
+            {
+                return NotFound();
+            }
+
+            _context.Meals.Remove(meal);
+            _context.SaveChanges();
+
+            return RedirectToAction("List", "Meal"); // Explizit zum "Index" der "MealController"
+        }
+
     }
 }

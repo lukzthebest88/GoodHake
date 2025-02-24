@@ -20,25 +20,29 @@ namespace GoodHake.Context
             base.OnModelCreating(modelBuilder);
         }
 
-        /// <summary>
-        /// Erstellt die InMemory-Datenbank und fügt Standardbenutzer hinzu
-        /// </summary>
         public void Seed()
         {
-            Database.EnsureDeleted(); // Datenbank zurücksetzen (optional für InMemory-DB)
-            Database.EnsureCreated(); // Neue Datenbank erstellen
+            Database.EnsureCreated(); // Neue Datenbank erstellen, falls nicht vorhanden
 
-            if (!Users.Any(u => u.Name == "admin")) // Prüfen, ob Benutzer bereits existiert
+            var adminUser = Users.FirstOrDefault(u => u.Name == "admin");
+
+            if (adminUser == null) // Prüfen, ob "admin" existiert
             {
-                var rootUser = new User
+                adminUser = new User
                 {
                     Name = "admin",
                     PasswordHash = HashPassword("admin"),
-                    Gender = "Männlich"// Sicherstellen, dass Passwort gehasht ist
+                    Gender = "Männlich",
+                    Role = "Admin" // Admin-Rolle setzen
                 };
 
-                Users.Add(rootUser);
-                SaveChanges(); // Änderungen speichern
+                Users.Add(adminUser);
+                SaveChanges();
+            }
+            else
+            {
+                adminUser.Role = "Admin"; // Falls er existiert, sicherstellen, dass er Admin ist
+                SaveChanges();
             }
         }
 

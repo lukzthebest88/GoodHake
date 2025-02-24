@@ -1,0 +1,83 @@
+﻿@model IEnumerable<GoodHake.Models.User>
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benutzerliste</title>
+    <style>
+        .user-list {
+            max-width: 1200px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .user:last-child {
+                border-bottom: none;
+            }
+
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .btn-ban {
+            background-color: red;
+            color: white;
+        }
+
+        .btn-unban {
+            background-color: green;
+            color: white;
+        }
+
+        .btn-stats {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="user-list">
+        <h2>Benutzerliste</h2>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var user in Model)
+            {
+                <div class="user">
+                    <span>@user.Name</span>
+                    <div>
+                        @if (user.IsBanned)
+                        {
+                            <a class="btn btn-unban" asp-controller="User" asp-action="Unban" asp-route-id="@user.Id">Entsperren</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-ban" asp-controller="User" asp-action="Ban" asp-route-id="@user.Id">Bannen</a>
+                        }
+                        <a class="btn btn-stats" asp-controller="User" asp-action="Stats" asp-route-id="@user.Id">Statistiken</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Keine Benutzer gefunden.</p>
+        }
+    </div>
+</body>
+</html>

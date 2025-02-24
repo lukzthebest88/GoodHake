@@ -1,6 +1,11 @@
 ﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" asp-controller="Home" asp-action="Index">GoodHake</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 @if (User.Identity.IsAuthenticated)
@@ -9,19 +14,37 @@
                         <a class="nav-link" asp-controller="User" asp-action="Profile">Mein Konto</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" asp-controller="Meal" asp-action="List">Mahlzeiten</a>
+                    </li>
+                    @if (User.Claims.Any(c => c.Type == "role" && c.Value == "Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="User" asp-action="UserList">Benutzerliste</a>
+                        </li>
+                    }
+                }
+            </ul>
+
+            <!-- Logout-Button nach rechts verschoben -->
+            @if (User.Identity.IsAuthenticated)
+            {
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
                         <a class="nav-link" asp-controller="User" asp-action="Logout">Logout</a>
                     </li>
-                }
-                else
-                {
+                </ul>
+            }
+            else
+            {
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="User" asp-action="Login">Login</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="User" asp-action="Register">Registrieren</a>
                     </li>
-                }
-            </ul>
+                </ul>
+            }
         </div>
     </div>
 </nav>

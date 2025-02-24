@@ -1,9 +1,9 @@
 ﻿@model GoodHake.Models.User
 
 <h2>Registrierung</h2>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 <form asp-action="Register" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
 
     <label>Name:</label>
     <input type="text" asp-for="Name" class="form-control" required />

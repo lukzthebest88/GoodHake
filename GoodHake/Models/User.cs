@@ -22,6 +22,9 @@ namespace GoodHake.Models
         public double Weight { get; set; } // Gewicht in kg
 
         public int DailyCalorieGoal { get; set; } // Manuell einstellbare Tageskalorien
+        public string Role { get; set; } = "User"; // Standardmäßig "User"
+        public bool IsBanned { get; set; } = false; // Standardmäßig nicht gebannt
+        public DailyIntake DailyIntake { get; set; }
 
     }
 }

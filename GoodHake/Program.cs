@@ -14,17 +14,19 @@ builder.Services.AddDbContext<GDDBContext>(options =>
     options.UseInMemoryDatabase("CalorieDB"); // Hier wird die In-Memory-DB konfiguriert!
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("role", "admin"));
-});
 // Authentication & Sessions
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/User/Login"; // Redirect, wenn nicht eingeloggt
     });
-
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8082, listenOptions =>
+    {
+        listenOptions.UseHttps();
+    });
+});
 builder.Services.AddSession();
 
 var app = builder.Build();

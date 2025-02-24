@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodHake", "GoodHake\GoodHake.csproj", "{B25982B8-98B3-4E80-9ADD-F597BB328C90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodHakeMAUI", "GoodHakeMAUI\GoodHakeMAUI.csproj", "{91104E4A-986A-4268-8087-49D57270F2DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B25982B8-98B3-4E80-9ADD-F597BB328C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B25982B8-98B3-4E80-9ADD-F597BB328C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B25982B8-98B3-4E80-9ADD-F597BB328C90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91104E4A-986A-4268-8087-49D57270F2DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91104E4A-986A-4268-8087-49D57270F2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91104E4A-986A-4268-8087-49D57270F2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91104E4A-986A-4268-8087-49D57270F2DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
